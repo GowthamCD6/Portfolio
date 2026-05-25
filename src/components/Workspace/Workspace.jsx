@@ -326,29 +326,11 @@ const Workspace = ({ children }) => {
                           </div>
 
                           {/* my work folder */}
-                          <div className="tree-folder" onClick={() => toggleFolder('myWork')}>
-                            {openFolders.myWork
-                              ? <Codicon icon="chevronDown" size={14} style={{ color: '#cccccc' }} />
-                              : <Codicon icon="chevronRight" size={14} style={{ color: '#cccccc' }} />}
-                            <Codicon icon="folderOpen" size={14} style={{ color: '#d16969' }} />
+                          <div className="tree-folder">
+                            <Codicon icon="chevronRight" size={14} style={{ color: '#cccccc' }} />
+                            <Codicon icon="folder" size={14} style={{ color: '#d16969' }} />
                             <span style={{ color: '#cccccc' }}>my work</span>
                           </div>
-
-                          {openFolders.myWork && (
-                            <div className="tree-sub-items">
-                              {projects.map(proj => (
-                                <div key={proj.id} className="tree-file project-file">
-                                  <span
-                                    className="project-icon-letter"
-                                    style={{ background: proj.color === '#89d185' ? '#1a2a1a' : '#1a1e2e', color: proj.color, border: `1px solid ${proj.color}` }}
-                                  >
-                                    {proj.iconType}
-                                  </span>
-                                  <span style={{ color: '#cccccc' }}>{proj.label}</span>
-                                </div>
-                              ))}
-                            </div>
-                          )}
 
                           {/* leetcode folder */}
                           <div className="tree-folder">

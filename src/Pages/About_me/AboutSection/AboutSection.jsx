@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Layers, Cpu, Diamond, Gauge, Zap } from "lucide-react";
-import { WorkspaceContext } from "../Workspace/WorkspaceContext";
+import { WorkspaceContext } from "../../../components/Workspace/WorkspaceContext";
 import "./AboutSection.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -212,19 +212,19 @@ const DNACanvas = () => {
     const st = section ? ScrollTrigger.create({
       trigger: section,
       scroller: scrollerRef.current,
-      start: "top 100%",
-      end: "bottom 0%",
+      start: "top bottom",
+      end: "bottom top",
       onEnter: () => { inViewRef.current = true; },
       onLeave: () => { inViewRef.current = false; },
       onEnterBack: () => { inViewRef.current = true; },
       onLeaveBack: () => { inViewRef.current = false; },
-      onUpdate: (self) => { progressRef.current = self.progress; }
+      onUpdate: (self) => { progressRef.current = Math.max(0, Math.min(1, self.progress)); }
     }) : null;
 
     if (section) {
         gsap.fromTo(canvas, 
             { opacity: 0 }, 
-            { opacity: 1, duration: 2, ease: "power2.inOut", scrollTrigger: { trigger: section, scroller: scrollerRef.current, start: "top 70%" } }
+            { opacity: 1, duration: 1.5, ease: "power2.inOut", scrollTrigger: { trigger: section, scroller: scrollerRef.current, start: "top 60%", toggleActions: "play none none reverse" } }
         );
     }
 
@@ -386,7 +386,7 @@ const AboutSection = () => {
             {split("web experiences.")}
           </h2>
           <p className="about-sub">
-            I am a software developer who focuses on writing clean, accessible code. Whether I'm building a complex dashboard or a simple landing page, I prioritize performance and usability.
+            I'm a full-stack developer passionate about crafting high-performance applications with clean, maintainable code. From responsive frontends to scalable backends, I focus on creating seamless user experiences and solving complex technical challenges with pragmatic solutions.
           </p>
         </header>
 

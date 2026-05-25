@@ -227,11 +227,14 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 8px 0 16px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   color: #bbbbbb;
   letter-spacing: 0.5px;
   flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .sidebar-header-actions {
@@ -268,17 +271,20 @@
 }
 
 .section-title {
-  height: 22px;
+  height: 24px;
   display: flex;
   align-items: center;
   gap: 2px;
   padding: 0 4px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   color: #bbbbbb;
   cursor: pointer;
   user-select: none;
   position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .section-title:hover { color: #e8e8e8; }
@@ -311,7 +317,7 @@
 
 .tree-folder,
 .tree-file {
-  height: 22px;
+  height: 24px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -319,10 +325,12 @@
   cursor: pointer;
   transition: background 0.1s;
   white-space: nowrap;
-  font-size: 13px;
+  font-size: 15px;
   color: #cccccc;
   user-select: none;
   flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tree-folder:hover,
@@ -373,19 +381,21 @@
 }
 
 .tree-symbol {
-  height: 22px;
+  height: 24px;
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 0 8px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 15px;
   color: #cccccc;
   user-select: none;
   border-radius: 3px;
   transition: background 0.1s;
   white-space: nowrap;
   flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tree-symbol:hover { background: #2a2d2e; }

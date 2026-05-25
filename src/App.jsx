@@ -1,5 +1,5 @@
-import Hero from "./Pages/Hero/Hero";
-import AboutSection from "./components/AboutSection/AboutSection";
+import Hero from "./Pages/About_me/Hero/Hero";
+import AboutSection from "./Pages/About_me/AboutSection/AboutSection";
 import Projects from "./Pages/Projects/Projects";
 import Skills from "./Pages/Skills/Skills";
 import ContactSection from "./components/ContactSection/ContactSection";
