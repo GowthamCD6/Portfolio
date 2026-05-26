@@ -51,7 +51,7 @@ const Workspace = ({ children }) => {
       const scrollTop = scroller.scrollTop;
       const viewMid = scrollTop + scroller.clientHeight / 2;
 
-      const sectionIds = ['hero', 'about', 'projects', 'contact'];
+      const sectionIds = ['hero', 'about', 'skills', 'mywork', 'contact'];
       let current = 'hero';
       for (const id of sectionIds) {
         const el = document.getElementById(id);
@@ -421,7 +421,7 @@ const Workspace = ({ children }) => {
             <div className="editor-content-scroll" ref={setScrollerNode}>
               <div className="editor-real-content" style={{ display: !activeTab ? 'none' : 'block' }}>
                 {React.Children.map(children, (child, index) => {
-                  const secIds = ['hero', 'about', 'projects', 'contact'];
+                  const secIds = ['hero', 'about', 'skills', 'mywork', 'contact'];
                   return (
                     <div key={index} id={secIds[index]} className="editor-section-wrap">
                       {child}

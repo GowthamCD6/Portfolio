@@ -527,9 +527,6 @@
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
-  container-type: inline-size;
-  will-change: scroll-position;
-  backface-visibility: hidden;
   min-height: 0;
   background: var(--bg-primary, #1e1e1e);
 }
@@ -543,10 +540,6 @@
 
 .editor-real-content {
   padding-bottom: 0;
-  container-type: size;
-  container-name: editor;
-  transform: translateZ(0);
-  backface-visibility: hidden;
   display: block;
   width: 100%;
   min-height: 100%;
@@ -555,8 +548,6 @@
 
 .editor-section-wrap {
   position: relative;
-  will-change: transform;
-  transform: translateZ(0);
 }
 
 /* ══════════════════════════════
@@ -621,7 +612,7 @@
 ══════════════════════════════ */
 .editor-real-content .hero-section,
 .editor-real-content .hero-sticky {
-  height: 100cqh;
+  height: calc(100vh - 87px);
   min-height: 600px;
 }
 
@@ -635,7 +626,7 @@
 }
 
 .editor-real-content .proj-pin-wrap {
-  height: 100cqh;
+  height: calc(100vh - 87px);
 }
 
 .editor-real-content .proj-track {

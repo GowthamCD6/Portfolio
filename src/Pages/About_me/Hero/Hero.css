@@ -30,9 +30,9 @@
  pointer-events:none;
  z-index:2;
  will-change:-webkit-mask-image,mask-image;
- opacity:1;
- -webkit-mask-image:radial-gradient(circle 0px at 50% 50% , rgba(0,0,0,1) 0%,rgba(0,0,0,0)50%);
- mask-image:radial-gradient(circle 0px at 50% 50%,rgba(0,0,0,1) 0% ,rgba(0,0,0,0) 50%);
+ opacity:0.75;
+ -webkit-mask-image:radial-gradient(circle 350px at 50% 50% , rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.15) 100%);
+ mask-image:radial-gradient(circle 350px at 50% 50%,rgba(0,0,0,0.4) 0% ,rgba(0,0,0,0.15) 100%);
 }
 
 .hero-sticky {
@@ -205,9 +205,17 @@
 
 .hero-char-outline {
   color: transparent;
-  -webkit-text-stroke: 3px rgba(43, 37, 34, 0.8);
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  -webkit-text-stroke: 1.5px var(--accent);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  filter: drop-shadow(0 2px 8px rgba(176, 130, 87, 0.1));
+  transition: color 0.4s cubic-bezier(0.19, 1, 0.22, 1), -webkit-text-stroke 0.4s ease, filter 0.4s ease;
+}
+
+.hero-char-outline:hover {
+  color: var(--accent);
+  -webkit-text-stroke: 1.5px transparent;
+  filter: drop-shadow(0 4px 16px rgba(176, 130, 87, 0.35));
 }
 
 .accent-period {

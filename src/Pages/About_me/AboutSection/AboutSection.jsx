@@ -212,19 +212,21 @@ const DNACanvas = () => {
     const st = section ? ScrollTrigger.create({
       trigger: section,
       scroller: scrollerRef.current,
-      start: "top bottom",
+      start: "top top",
       end: "bottom top",
       onEnter: () => { inViewRef.current = true; },
       onLeave: () => { inViewRef.current = false; },
       onEnterBack: () => { inViewRef.current = true; },
       onLeaveBack: () => { inViewRef.current = false; },
-      onUpdate: (self) => { progressRef.current = Math.max(0, Math.min(1, self.progress)); }
+      onUpdate: (self) => { 
+        progressRef.current = Math.max(0, Math.min(1, self.progress));
+      }
     }) : null;
 
     if (section) {
         gsap.fromTo(canvas, 
             { opacity: 0 }, 
-            { opacity: 1, duration: 1.5, ease: "power2.inOut", scrollTrigger: { trigger: section, scroller: scrollerRef.current, start: "top 60%", toggleActions: "play none none reverse" } }
+            { opacity: 1, duration: 0.8, ease: "power2.inOut", scrollTrigger: { trigger: section, scroller: scrollerRef.current, start: "top 80%", toggleActions: "play none none reverse" } }
         );
     }
 
@@ -254,18 +256,21 @@ const DNACanvas = () => {
    ═══════════════════════════════════════════════════════ */
 
 const BLOCKS = [
-  { align: "left", icon: <Layers size={20} strokeWidth={1.5} />, accent: "#E27D60", title: "Frontend\nEngineering",
-    desc: "I build rich, interactive client-side applications using React, Next.js, and modern CSS to create highly engaging user experiences.",
-    tags: ["React", "JavaScript", "Animations"] },
-  { align: "right", icon: <Cpu size={20} strokeWidth={1.5} />, accent: "#E8A87C", title: "Backend\nSystems",
-    desc: "Building resilient front-to-back technical foundations. Tailored API systems and server infrastructure designed securely for scale.",
-    tags: ["Node.js", "Express", "PostgreSQL"] },
-  { align: "left", icon: <Diamond size={20} strokeWidth={1.5} />, accent: "#C38D9E", title: "Product\nDesign",
-    desc: "Translating mockups into flawlessly executed code. A strong focus on accessibility, whitespace, and structural visual integrity.",
-    tags: ["UI/UX", "Tailwind", "Responsive"] },
-  { align: "right", icon: <Gauge size={20} strokeWidth={1.5} />, accent: "#A8A29E", title: "Web\nPerformance",
-    desc: "Strict frame budgeting and optimization. Deep commitment to perfect web vitals and ensuring pristine load times across all devices.",
-    tags: ["Optimization", "Web Vitals", "Lighthouse"] },
+  { align: "left", icon: <Layers size={20} strokeWidth={1.5} />, accent: "#61DAFB", title: "Frontend\nMastery",
+    desc: "Architecting modern, responsive user interfaces with React and Next.js. I leverage Tailwind CSS for rapid prototyping and create pixel-perfect designs with smooth animations and exceptional performance.",
+    tags: ["React", "Next.js", "Tailwind CSS", "JavaScript"] },
+  { align: "right", icon: <Cpu size={20} strokeWidth={1.5} />, accent: "#68A063", title: "Backend\nArchitecture",
+    desc: "Building scalable APIs and server-side applications with Node.js and Express. I design robust systems with PostgreSQL and MongoDB, ensuring data integrity, security, and optimal performance at scale.",
+    tags: ["Node.js", "Express", "REST APIs", "Microservices"] },
+  { align: "left", icon: <Zap size={20} strokeWidth={1.5} />, accent: "#EC4899", title: "Database\nDesign",
+    desc: "Designing efficient relational and NoSQL database architectures. Expertise in PostgreSQL for structured data, MongoDB for flexible schemas, with focus on indexing, query optimization, and data consistency.",
+    tags: ["PostgreSQL", "MongoDB", "Data Modeling", "Optimization"] },
+  { align: "right", icon: <Diamond size={20} strokeWidth={1.5} />, accent: "#F59E0B", title: "Real World\nProjects",
+    desc: "Full-stack solutions delivered across multiple domains. Created Fund App for financial management, Admin Dashboard for data visualization, and this Portfolio showcasing modern web development practices.",
+    tags: ["Fund App", "Admin Dashboard", "Portfolio"] },
+  { align: "left", icon: <Gauge size={20} strokeWidth={1.5} />, accent: "#8B5CF6", title: "Code\nExcellence",
+    desc: "Committed to writing clean, maintainable, and performant code. Focus on best practices, optimization, and delivering seamless user experiences across all devices and browsers.",
+    tags: ["Web Vitals", "Optimization", "Best Practices"] },
 ];
 
 
@@ -279,11 +284,11 @@ const AskMeBubble = () => {
   const [active, setActive] = useState(0);
 
   const qna = [
-    { q: "What drives your passion for coding?", a: "I love the process of turning complex logic into accessible, beautiful interfaces. Solving real problems with elegant code is what got me started." },
-    { q: "How do you view the relationship between design & code?", a: "They go hand-in-hand. Great engineering relies on solid aesthetics, and good design needs flawless performance to feel right to the user." },
-    { q: "What does your technical stack look like?", a: "I lean into React/Next.js for front-ends, Node/Express for backend APIs, and I enjoy adding subtle animations with GSAP where appropriate." },
-    { q: "Are you currently accepting new opportunities?", a: "I'm always open to discussing interesting projects or roles. Let's start a conversation." },
-    { q: "How do you guarantee performance?", a: "By sticking to best practices, lazy-loading assets, monitoring Web Vitals, and avoiding unnecessary React re-renders." },
+    { q: "What's your tech stack?", a: "Frontend: React, Next.js, Tailwind CSS, JavaScript. Backend: Node.js, Express, PostgreSQL, MongoDB. I also work with Java for backend systems and use GSAP for animations." },
+    { q: "What major projects have you built?", a: "I've shipped Fund App for financial management, an Admin Dashboard with data visualization, and this portfolio. Each demonstrates different aspects of full-stack development." },
+    { q: "How do you approach full-stack development?", a: "I believe in creating scalable, maintainable systems. Strong frontend fundamentals paired with solid backend architecture ensures cohesive, performant applications." },
+    { q: "What's your learning journey?", a: "I started with JavaScript and evolved into a full-stack developer. Over 3+ years, I've deepened expertise in React/Next.js ecosystems and backend systems with Node.js and databases." },
+    { q: "How do you ensure code quality?", a: "Through clean code principles, performance monitoring, Web Vitals optimization, proper error handling, and continuous learning. Testing and code reviews are fundamental to my process." },
   ];
 
   useEffect(() => {
@@ -342,7 +347,10 @@ const AboutSection = () => {
       gsap.from(".about-label", { y: 20, opacity: 0, duration: 0.7, ease: "power3.out", scrollTrigger: { trigger: s, scroller: scrollerRef.current, start: "top 80%", toggleActions: "play none none reverse" } });
       gsap.from(".about-heading-char", { y: 60, opacity: 0, stagger: 0.015, duration: 0.8, ease: "power4.out", scrollTrigger: { trigger: ".about-heading", scroller: scrollerRef.current, start: "top 78%", toggleActions: "play none none reverse" } });
       gsap.from(".about-sub", { y: 20, opacity: 0, duration: 0.7, ease: "power3.out", scrollTrigger: { trigger: ".about-sub", scroller: scrollerRef.current, start: "top 85%", toggleActions: "play none none reverse" } });
-      s.querySelectorAll(".about-block").forEach(function (b) {
+      
+      // Animate blocks with parallax scroll effect
+      s.querySelectorAll(".about-block").forEach(function (b, idx) {
+        // Initial entrance animation
         gsap.from(b, { 
             y: 40, 
             opacity: 0, 
@@ -355,7 +363,26 @@ const AboutSection = () => {
                 toggleActions: "play none none reverse" 
             } 
         });
+        
+        // Parallax scroll animation
+        gsap.to(b, {
+          y: idx % 2 === 0 ? 80 : -80,
+          duration: 1,
+          scrollTrigger: {
+            trigger: s,
+            scroller: scrollerRef.current,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.6,
+            onUpdate: (self) => {
+              // Smooth parallax based on scroll progress
+              const progress = self.progress;
+              gsap.set(b, { y: (idx % 2 === 0 ? 80 : -80) * progress });
+            }
+          }
+        });
       });
+      
       gsap.from(".about-stat", { y: 30, opacity: 0, stagger: 0.08, duration: 0.6, ease: "power3.out", scrollTrigger: { trigger: ".about-stats-row", scroller: scrollerRef.current, start: "top 88%", toggleActions: "play none none reverse" } });
     }, s);
     return () => ctx.revert();
@@ -377,16 +404,16 @@ const AboutSection = () => {
 
       <div className="about-content-layer">
         <header className="about-header">
-          <span className="about-label">BACKGROUND & EXPERTISE</span>
+          <span className="about-label">FULL STACK DEVELOPER</span>
           <h2 className="about-heading">
-            {split("Building robust,")}
+            {split("Crafting seamless,")}
             <br />
-            {split("user-centric")}
+            {split("full-stack")}
             <br />
-            {split("web experiences.")}
+            {split("applications.")} 
           </h2>
           <p className="about-sub">
-            I'm a full-stack developer passionate about crafting high-performance applications with clean, maintainable code. From responsive frontends to scalable backends, I focus on creating seamless user experiences and solving complex technical challenges with pragmatic solutions.
+            3+ years building robust web applications with React, Next.js, and Node.js. I specialize in crafting responsive frontends with Tailwind CSS and scalable backend systems with Express and PostgreSQL. I'm passionate about clean code, performance optimization, and delivering user-centric digital experiences.
           </p>
         </header>
 
@@ -429,9 +456,9 @@ const AboutSection = () => {
         <div className="about-stats-row">
           {[
             { n: "3+", l: "Years Experience" },
-            { n: "25+", l: "Projects Shipped" },
-            { n: "10+", l: "Open Source" },
-            { n: "100", l: "Lighthouse Score" },
+            { n: "5+", l: "Full Stack Projects" },
+            { n: "10+", l: "Tech Stack" },
+            { n: "98+", l: "Avg Lighthouse" },
           ].map(function (s, i) {
             return (
               <div key={i} className="about-stat">

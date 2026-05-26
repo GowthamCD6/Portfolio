@@ -47,13 +47,13 @@ const Hero = () => {
       let needsMaskUpdate = false;
       let mouseX = section.clientWidth / 2;
       let mouseY = section.clientHeight / 2;
-      const spotlightRadius = 130;
+      const spotlightRadius = 350;
 
       const renderMask = () => {
         animationFrameId = null;
         if (!bgRef.current || !needsMaskUpdate) return;
 
-        const maskGradient = `radial-gradient(circle ${spotlightRadius}px at ${mouseX}px ${mouseY}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%)`;
+        const maskGradient = `radial-gradient(circle ${spotlightRadius}px at ${mouseX}px ${mouseY}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.15) 100%)`;
         bgRef.current.style.webkitMaskImage = maskGradient;
         bgRef.current.style.maskImage = maskGradient;
         needsMaskUpdate = false;
@@ -75,10 +75,13 @@ const Hero = () => {
 
       const handleMouseLeave = () => {
         if (!bgRef.current) return;
-        const fullHideMask = "radial-gradient(circle 0px at 50% 50%, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 50%)";
-        bgRef.current.style.webkitMaskImage = fullHideMask;
-        bgRef.current.style.maskImage = fullHideMask;
+        const defaultMask = `radial-gradient(circle 350px at 50% 50%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 100%)`;
+        bgRef.current.style.webkitMaskImage = defaultMask;
+        bgRef.current.style.maskImage = defaultMask;
       };
+
+      // Initialize default mask
+      handleMouseLeave();
 
       if (!prefersReducedMotion && canUseHover) {
         section.addEventListener("mousemove", handleMouseMove);
@@ -102,11 +105,10 @@ const Hero = () => {
           trigger: section,
           scroller: scrollerRef.current,
           start: "top top",
-          end: "+=150%",
-          scrub: 1.5,
+          end: "+=100%",
+          scrub: 1,
           pin: true,
           pinSpacing: true,
-          anticipatePin: 1,
         },
       });
 
