@@ -1,43 +1,44 @@
 .hero-section {
   position: relative;
   background: var(--bg-primary);
-  overflow: hidden;
-  height: 100vh;
+  height: 170vh;
   perspective: 2000px;
   transform-style: preserve-3d;
 }
 
 .hero-grid-base {
- position:absolute;
- inset:0;
- background-image: 
-   linear-gradient(var(--border) 1px, transparent 1px),
-   linear-gradient(90deg, var(--border) 1px, transparent 1px);
- background-size: 60px 60px;
- background-position: center center;
- pointer-events:none;
- z-index:1;
+  position:absolute;
+  inset:0;
+  background-image: 
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: center center;
+  pointer-events:none;
+  z-index:1;
 }
 
 .hero-bg {
- position:absolute;
- top:0;
- left:0;
- width:100%;
- height:100%;
- background-size:cover;
- background-position:center;
- pointer-events:none;
- z-index:2;
- will-change:-webkit-mask-image,mask-image;
- opacity:0.75;
- -webkit-mask-image:radial-gradient(circle 350px at 50% 50% , rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.15) 100%);
- mask-image:radial-gradient(circle 350px at 50% 50%,rgba(0,0,0,0.4) 0% ,rgba(0,0,0,0.15) 100%);
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-size:cover;
+  background-position:center;
+  pointer-events:none;
+  z-index:2;
+  will-change:-webkit-mask-image,mask-image;
+  opacity:1;
+  -webkit-mask-image:radial-gradient(circle 0px at 50% 50%, black 100%, transparent 100%);
+  mask-image:radial-gradient(circle 0px at 50% 50%, black 100%, transparent 100%);
 }
 
 .hero-sticky {
-  position: relative;
-  height: 100vh;
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 87px);
+  min-height: 600px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -262,15 +263,6 @@
   background: rgba(43, 37, 34, 0.02);
   backdrop-filter: blur(4px);
   will-change: transform, opacity;
-  transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.hero-role-tag:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(176, 130, 87, 0.05);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(176, 130, 87, 0.15);
 }
 
 /* ── Bottom row ────────────────────────────────────────────── */

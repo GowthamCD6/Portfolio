@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight, Globe } from 'lucide-react';
-import { WorkspaceContext } from '../../components/Workspace/WorkspaceContext';
+import { WorkspaceContext } from '../../../components/Workspace/WorkspaceContext';
 import './Projects.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -134,11 +134,14 @@ const Projects = () => {
       // Card Parallax & Entrance
       cardsRef.current.forEach((card) => {
         if (!card) return;
-        
-        gsap.fromTo(card.querySelector('.pj-img'),
+
+        // Image parallax (unchanged core motion)
+        gsap.fromTo(
+          card.querySelector('.pj-img'),
           { scale: 1.2, x: -50 },
           {
-            scale: 1, x: 50,
+            scale: 1,
+            x: 50,
             ease: 'none',
             scrollTrigger: {
               trigger: card,
@@ -147,24 +150,54 @@ const Projects = () => {
               start: 'left right',
               end: 'right left',
               scrub: 0.8,
-              invalidateOnRefresh: true
-            }
+              invalidateOnRefresh: true,
+            },
           }
         );
 
-        gsap.from(card.querySelector('.pj-body'), {
-          y: 40, opacity: 0, duration: 0.8,
-          scrollTrigger: {
-            trigger: card,
-            scroller,
-            containerAnimation: hScroll,
-            start: 'left 80%'
-          }
+        // Add subtle continuous rotation to the image for visual interest
+        gsap.to(card.querySelector('.pj-img'), {
+          rotate: 5,
+          yoyo: true,
+          repeat: -1,
+          duration: 8,
+          ease: 'sine.inOut',
         });
+
+        // Card body fades and slides up as it enters view
+        gsap.fromTo(
+          card.querySelector('.pj-body'),
+          { y: 40, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: card,
+              scroller,
+              containerAnimation: hScroll,
+              start: 'left 80%',
+            },
+          }
+        );
       });
 
-      ScrollTrigger.refresh();
-    }, wrap);
+        // Staggered entrance for each card (fade & rise)
+        gsap.from(cardsRef.current, {
+          opacity: 0,
+          y: 40,
+          stagger: 0.15,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: wrapRef.current,
+            scroller,
+            start: "top 80%",
+          },
+        });
+        
+        ScrollTrigger.refresh();
+      }, wrap);
 
     return () => {
       attachedImages.forEach((img) => {

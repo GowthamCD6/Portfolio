@@ -17,6 +17,7 @@ const CRACK_ORIGINS = Array.from({ length: 12 }, (_, i) => ({
 const Hero = () => {
   const sectionRef = useRef(null);
   const bgRef = useRef(null);
+  const scrollProgressRef = useRef(0);
   const { scrollerRef, isReady } = React.useContext(WorkspaceContext);
 
   useEffect(() => {
@@ -47,13 +48,13 @@ const Hero = () => {
       let needsMaskUpdate = false;
       let mouseX = section.clientWidth / 2;
       let mouseY = section.clientHeight / 2;
-      const spotlightRadius = 350;
+      const spotlightRadius = 130;
 
       const renderMask = () => {
         animationFrameId = null;
         if (!bgRef.current || !needsMaskUpdate) return;
 
-        const maskGradient = `radial-gradient(circle ${spotlightRadius}px at ${mouseX}px ${mouseY}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.15) 100%)`;
+        const maskGradient = `radial-gradient(circle ${spotlightRadius}px at ${mouseX}px ${mouseY}px, black 100%, transparent 100%)`;
         bgRef.current.style.webkitMaskImage = maskGradient;
         bgRef.current.style.maskImage = maskGradient;
         needsMaskUpdate = false;
@@ -75,7 +76,7 @@ const Hero = () => {
 
       const handleMouseLeave = () => {
         if (!bgRef.current) return;
-        const defaultMask = `radial-gradient(circle 350px at 50% 50%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 100%)`;
+        const defaultMask = `radial-gradient(circle 0px at 50% 50%, black 100%, transparent 100%)`;
         bgRef.current.style.webkitMaskImage = defaultMask;
         bgRef.current.style.maskImage = defaultMask;
       };
@@ -100,15 +101,28 @@ const Hero = () => {
         });
       }
 
+      const roleTags = section.querySelectorAll(".hero-role-tag");
+      const roleListeners = [];
+      if (canUseHover) {
+        roleTags.forEach((tag) => {
+          const onEnter = () => gsap.to(tag, { y: -2, borderColor: "var(--accent)", color: "var(--accent)", backgroundColor: "rgba(176, 130, 87, 0.05)", boxShadow: "0 4px 20px rgba(176, 130, 87, 0.15)", duration: 0.3, ease: "power2.out", overwrite: "auto" });
+          const onLeave = () => gsap.to(tag, { y: 0, borderColor: "rgba(43, 37, 34, 0.08)", color: "var(--text-secondary)", backgroundColor: "rgba(43, 37, 34, 0.02)", boxShadow: "none", duration: 0.3, ease: "power2.out", overwrite: "auto" });
+          tag.addEventListener("mouseenter", onEnter);
+          tag.addEventListener("mouseleave", onLeave);
+          roleListeners.push({ tag, onEnter, onLeave });
+        });
+      }
+
       const scrollTL = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           scroller: scrollerRef.current,
           start: "top top",
-          end: "+=100%",
+          end: "bottom bottom",
           scrub: 1,
-          pin: true,
-          pinSpacing: true,
+          onUpdate: (self) => {
+            scrollProgressRef.current = self.progress;
+          }
         },
       });
 
@@ -120,7 +134,7 @@ const Hero = () => {
         return { vw: rect.width, vh: rect.height };
       };
 
-      // Assign each char a glass-shard burst vector based on nearest crack origin
+      // Characters (CREATIVE DEVELOPER) animate from 0.3 to 1.0
       chars.forEach((char) => {
         const rect = char.getBoundingClientRect();
         const { vw, vh } = getViewport();
@@ -157,25 +171,27 @@ const Hero = () => {
             scale: peakScale,
             rotation: endRot,
             opacity: 0,
-            duration: 1.5,
-            ease: "power3.in",  
+            duration: 0.7,
+            ease: "power2.in",  
             immediateRender: false,
           },
-          0
+          0.3
         );
       });
 
+      // Badge animate from 0.3 to 0.9
       scrollTL.fromTo(".hero-badge",
         { y: 0, x: 0, rotation: 0, opacity: 1, scale: 1 },
         { y: -window.innerHeight * 0.6, x: -window.innerWidth * 0.3,
           rotation: -25, opacity: 0, scale: 0.4,
-          duration: 1, ease: "power3.in", immediateRender: false }, 0);
+          duration: 0.6, ease: "power2.in", immediateRender: false }, 0.3);
 
+      // Divider line animate from 0.3 to 0.8
       scrollTL.fromTo(".hero-divider-line",
         { scaleX: 1, opacity: 1 },
-        { scaleX: 1.4, opacity: 0, duration: 0.6, ease: "power2.in", immediateRender: false }, 0);
+        { scaleX: 1.4, opacity: 0, duration: 0.5, ease: "power2.in", immediateRender: false }, 0.3);
 
-      const roleTags = section.querySelectorAll(".hero-role-tag");
+      // Role tags animate from 0.3 to 0.9
       roleTags.forEach((tag, i) => {
         const { vw, vh } = getViewport();
         const diagDist = Math.sqrt(vw * vw + vh * vh);
@@ -188,23 +204,25 @@ const Hero = () => {
             x: Math.cos(angle) * dist,
             rotation: (Math.random() - 0.5) * 180,
             opacity: 0, scale: 0.2,
-            duration: 1.2, ease: "power3.in", immediateRender: false
-          }, 0);
+            duration: 0.6, ease: "power2.in", immediateRender: false
+          }, 0.3);
       });
 
+      // Sub items animate from 0.3 to 0.8+
       const subItems = section.querySelectorAll(".hero-sub");
       subItems.forEach((sub, i) => {
         scrollTL.fromTo(sub,
           { y: 0, opacity: 1, scale: 1 },
           { y: window.innerHeight * 0.4, opacity: 0, scale: 0.8,
-            duration: 1, ease: "power3.in", immediateRender: false }, i * 0.08);
+            duration: 0.5, ease: "power2.in", immediateRender: false }, 0.3 + i * 0.05);
       });
 
+      // Glows animate from 0.3 to 0.8
       const glows = section.querySelectorAll(".hero-glow");
       glows.forEach((glow) => {
         scrollTL.fromTo(glow,
           { opacity: 1 },
-          { opacity: 0, duration: 0.8, ease: "power2.in", immediateRender: false }, 0);
+          { opacity: 0, duration: 0.5, ease: "power2.in", immediateRender: false }, 0.3);
       });
 
       return () => {
@@ -214,6 +232,10 @@ const Hero = () => {
           charListeners.forEach(({ char, onEnter, onLeave }) => {
             char.removeEventListener("mouseenter", onEnter);
             char.removeEventListener("mouseleave", onLeave);
+          });
+          roleListeners.forEach(({ tag, onEnter, onLeave }) => {
+            tag.removeEventListener("mouseenter", onEnter);
+            tag.removeEventListener("mouseleave", onLeave);
           });
         }
         if (animationFrameId !== null) {
@@ -245,7 +267,7 @@ const Hero = () => {
         <div className="hero-glow hero-glow-2" />
         <div className="hero-glow hero-glow-3" />
 
-        <AnimatedFace />
+        <AnimatedFace scrollProgressRef={scrollProgressRef} />
 
         <div className="hero-content">
           <div className="hero-content-inner">

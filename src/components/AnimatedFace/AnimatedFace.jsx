@@ -6,11 +6,10 @@ import { WorkspaceContext } from "../Workspace/WorkspaceContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const AnimatedFace = () => {
+const AnimatedFace = ({ scrollProgressRef }) => {
   const canvasRef = useRef(null);
   const particlesRef = useRef([]);
   const mouseRef = useRef({ x: -9999, y: -9999 });
-  const scrollRef = useRef(0);
   const animFrameRef = useRef(0);
   const readyRef = useRef(false);
   const inViewRef = useRef(true);
@@ -53,8 +52,7 @@ const AnimatedFace = () => {
     window.addEventListener("resize", resize);
     scroller.addEventListener("resize", resize);
 
-    const GAP = 5;
-    const DOT_RADIUS = 3.5;
+    const GAP = 2; // finer granularity for clearer face detail
     const MOUSE_RADIUS = 120;
     const PUSH_FORCE = 18;
     const RETURN_SPEED = 0.14;
@@ -99,41 +97,26 @@ const AnimatedFace = () => {
 
       const particles = [];
       const portraitCXnorm = 0.5;
-      const portraitCYnorm = 0.38;
+      const portraitCYnorm = 0.5; // center vertically for proper gaze
 
       for (let y = 0; y < SAMPLE_H; y += GAP) {
         for (let x = 0; x < SAMPLE_W; x += GAP) {
           const i = (y * SAMPLE_W + x) * 4;
           const r = pixels[i], g = pixels[i + 1], b = pixels[i + 2], a = pixels[i + 3];
-          if (a < 30) continue;
+          
+          // Keep all non-transparent pixels to reconstruct the face clearly
+          if (a < 30) continue; // include more semi‑transparent pixels for clearer face
 
-          const brightness = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
           const nx = (x / SAMPLE_W - portraitCXnorm);
           const ny = (y / SAMPLE_H - portraitCYnorm);
           const distFromCenter = Math.sqrt(nx * nx + ny * ny);
-
-          if (brightness < 0.04 && distFromCenter > 0.55) continue;
-          if (brightness < 0.08 && distFromCenter > 0.85) continue;
-          if (brightness < 0.12 && (x < 10 || x > SAMPLE_W - 10 || y < 8)) continue;
-          if (brightness < 0.02) continue;
 
           const { offsetX, offsetY } = dimensionsRef.current;
           const worldX = offsetX + x;
           const worldY = offsetY + y;
 
-          // Assign this particle to the nearest shard center for burst direction
-          let bestDist = Infinity, bestShard = shardCenters[0];
-          for (const sc of shardCenters) {
-            const d = (nx - sc.nx) ** 2 + (ny - sc.ny) ** 2;
-            if (d < bestDist) { bestDist = d; bestShard = sc; }
-          }
-
-          // Glass burst: primary direction from shard center outward,
-          // with slight angular jitter for a shattered look
-          const baseAngle = Math.atan2(bestShard.ny, bestShard.nx);
-          const jitter = (Math.random() - 0.5) * 0.8;
-          const burstAngle = baseAngle + jitter;
-          // Distance varies: shards at the edges fly further
+          // Assign each particle a random burst angle for independent movement
+          const burstAngle = Math.random() * Math.PI * 2;
           const edgeFactor = 0.4 + distFromCenter * 1.6;
           const maxDim = Math.max(viewW, viewH);
           const scatterDist = maxDim * (0.6 + edgeFactor * 0.8) + Math.random() * maxDim * 0.4;
@@ -151,8 +134,8 @@ const AnimatedFace = () => {
             startY: worldY + Math.sin(entryAngle) * entryDist,
             r, g, b,
             alpha: 1.0,
-            size: DOT_RADIUS,
-            baseSize: DOT_RADIUS,
+            size: GAP,
+            baseSize: GAP,
             vx: 0, vy: 0,
             burstAngle,
             scatterDist,
@@ -178,7 +161,6 @@ const AnimatedFace = () => {
     };
 
     const heroSection = canvas.closest("section");
-    let st;
     let observer;
     if (heroSection) {
       observer = new IntersectionObserver(
@@ -188,20 +170,6 @@ const AnimatedFace = () => {
         { root: scrollerRef.current, threshold: 0 }
       );
       observer.observe(heroSection);
-
-      st = ScrollTrigger.create({
-        trigger: heroSection,
-        scroller: scrollerRef.current,
-        start: "top top",
-        end: "+=150%",
-        onUpdate: (self) => {
-          // Ease the scroll progress so the burst feels snappier early
-          const raw = self.progress;
-          scrollRef.current = raw < 0.5
-            ? raw * raw * 2               // fast ease-in
-            : 1 - (1 - raw) * (1 - raw) * 2; // ease out at the end
-        }
-      });
     }
 
     const startTime = performance.now();
@@ -220,7 +188,16 @@ const AnimatedFace = () => {
       const mouse = mouseRef.current;
       const particles = particlesRef.current;
       const len = particles.length;
-      const sp = scrollRef.current;
+
+      // Extract scroll progress from scrollProgressRef
+      const rawScroll = scrollProgressRef ? scrollProgressRef.current : 0;
+      // Map raw scroll progress [0, 0.4] to face progress [0, 1]
+      const faceRaw = Math.min(1, rawScroll / 0.4);
+      // Ease the faceRaw progress
+      const sp = faceRaw < 0.5
+        ? faceRaw * faceRaw * 2
+        : 1 - (1 - faceRaw) * (1 - faceRaw) * 2;
+
       const ep = entryProgressRef.current;
       const now = performance.now();
       const elapsed = now - startTime;
@@ -277,13 +254,11 @@ const AnimatedFace = () => {
         if (fadeAlpha < 0.005) continue;
 
         // Particles grow slightly as they burst out (like shards catching light)
-        const burstGrow = 1 + sp * 1.8;
+        const burstGrow = 1 + sp * 1.5;
         const drawSize = p.size * burstGrow;
 
         ctx.fillStyle = `rgba(${p.r},${p.g},${p.b},${fadeAlpha})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, Math.max(0.4, drawSize), 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillRect(p.x - drawSize / 2, p.y - drawSize / 2, drawSize, drawSize);
       }
 
       animFrameRef.current = requestAnimationFrame(animate);
@@ -307,7 +282,6 @@ const AnimatedFace = () => {
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      if (st) st.kill();
       if (observer) observer.disconnect();
       window.removeEventListener("resize", resize);
       scroller.removeEventListener("resize", resize);

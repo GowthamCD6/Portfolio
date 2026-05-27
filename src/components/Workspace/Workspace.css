@@ -610,8 +610,14 @@
 /* ══════════════════════════════
    SECTION SIZING
 ══════════════════════════════ */
-.editor-real-content .hero-section,
+.editor-real-content .hero-section {
+  height: 170vh;
+  min-height: 1000px;
+}
+
 .editor-real-content .hero-sticky {
+  position: sticky;
+  top: 0;
   height: calc(100vh - 87px);
   min-height: 600px;
 }
@@ -640,8 +646,18 @@
 }
 
 @supports not (height: 1cqh) {
-  .editor-real-content .hero-section,
-  .editor-real-content .hero-sticky,
+  .editor-real-content .hero-section {
+    height: 170vh;
+    min-height: 1000px;
+  }
+
+  .editor-real-content .hero-sticky {
+    position: sticky;
+    top: 0;
+    height: calc(100vh - 87px);
+    min-height: 600px;
+  }
+
   .editor-real-content .proj-pin-wrap,
   .editor-real-content .proj-track {
     min-height: 600px;

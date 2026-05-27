@@ -1,65 +1,83 @@
 import React, { useContext, useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Codicon from '../../utils/Codicon';
-import { WorkspaceContext } from '../../components/Workspace/WorkspaceContext';
+import Codicon from '../../../utils/Codicon';
+import { WorkspaceContext } from '../../../components/Workspace/WorkspaceContext';
 import './Skills.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const skills = [
   {
-    name: 'Frontend Dev',
+    name: 'Frontend Engineering',
     icon: 'fileCode',
-    tech: 'React, Next.js, Vue, TypeScript',
-    summary: 'Building interactive, fast UIs with clean component architecture.',
-    proficiency: 95,
-    tags: ['React', 'TypeScript', 'Animation'],
+    tech: 'React, Next.js, Tailwind, GSAP',
+    summary:
+      'Building high-performance interfaces with smooth interactions, scalable architecture, and production-grade UI systems.',
+    proficiency: 94,
+    level: 'Expert',
+    meta: 'Used in 10+ production apps',
+    tags: ['React', 'Animations', 'Responsive UI'],
     color: 'var(--accent)',
   },
   {
-    name: 'Backend Dev',
+    name: 'Backend Systems',
     icon: 'terminal',
-    tech: 'Node.js, Python, Go, PHP',
-    summary: 'Designing scalable APIs and production-ready server logic.',
-    proficiency: 85,
-    tags: ['Node.js', 'Express', 'API Design'],
+    tech: 'Node.js, Express, REST APIs',
+    summary:
+      'Designing secure backend architectures, authentication systems, and scalable APIs for real-world applications.',
+    proficiency: 88,
+    level: 'Advanced',
+    meta: 'Built 5+ full-stack systems',
+    tags: ['Node.js', 'API', 'Authentication'],
     color: 'var(--accent-warm)',
   },
   {
-    name: 'Database',
+    name: 'Database Architecture',
     icon: 'database',
     tech: 'PostgreSQL, MongoDB, Redis',
-    summary: 'Modeling data for speed, consistency, and long-term growth.',
-    proficiency: 88,
-    tags: ['PostgreSQL', 'MongoDB', 'Redis'],
+    summary:
+      'Creating optimized database structures with strong relationships, indexing strategies, and scalable schema design.',
+    proficiency: 90,
+    level: 'Advanced',
+    meta: 'Primary choice for all projects',
+    tags: ['PostgreSQL', 'Schema Design', 'Optimization'],
     color: 'var(--accent-gold)',
   },
   {
-    name: 'Mobile Apps',
+    name: 'Mobile Development',
     icon: 'smartphone',
-    tech: 'React Native, Flutter, Swift',
-    summary: 'Creating smooth mobile experiences with native-like performance.',
-    proficiency: 80,
-    tags: ['React Native', 'Flutter', 'Cross Platform'],
+    tech: 'React Native, Expo',
+    summary:
+      'Developing cross-platform mobile apps with smooth UX, native integrations, and consistent performance.',
+    proficiency: 82,
+    level: 'Production Ready',
+    meta: '3 apps launched to stores',
+    tags: ['React Native', 'Expo', 'Android'],
     color: 'var(--accent)',
   },
   {
-    name: 'UI/UX Design',
+    name: 'UI Motion & Experience',
     icon: 'layers',
-    tech: 'Figma, Adobe XD, Framer',
-    summary: 'Crafting intuitive interfaces with a strong visual system.',
-    proficiency: 82,
-    tags: ['Design System', 'Prototyping', 'Interaction'],
+    tech: 'Figma, Framer Motion, GSAP',
+    summary:
+      'Crafting immersive digital experiences with modern layouts, micro-interactions, and cinematic motion design.',
+    proficiency: 86,
+    level: 'Specialized',
+    meta: 'Core focus in recent projects',
+    tags: ['Motion Design', 'UX', 'Micro Interactions'],
     color: 'var(--accent-warm)',
   },
   {
-    name: 'DevOps',
+    name: 'Deployment & DevOps',
     icon: 'cloud',
-    tech: 'Docker, AWS, Vercel, CI/CD',
-    summary: 'Automating deployment and keeping products stable in production.',
+    tech: 'Docker, VPS, CI/CD, Linux',
+    summary:
+      'Managing deployments, server environments, and automation workflows for stable and scalable production systems.',
     proficiency: 78,
-    tags: ['Docker', 'AWS', 'CI/CD'],
+    level: 'Production Ready',
+    meta: 'Self-hosting all personal projects',
+    tags: ['Docker', 'Linux', 'Deployment'],
     color: 'var(--accent-gold)',
   },
 ];
@@ -271,7 +289,8 @@ const Skills = () => {
           Skills <span className="text-gradient">Stack</span>
         </h2>
         <p className="section-subtitle">
-          Core strengths I use to ship polished products from interface to infrastructure.
+          Building scalable digital products with a focus on performance, smooth user experience, and
+          real-world problem solving.
         </p>
       </div>
 
@@ -303,11 +322,11 @@ const Skills = () => {
                     }}
                   />
                 </div>
-                <span className="proficiency-text">{skill.proficiency}%</span>
+                <span className="proficiency-text">{skill.level}</span>
               </div>
 
               <p className="skill-summary">{skill.summary}</p>
-              <p className="skill-tech">{skill.tech}</p>
+              <p className="skill-meta">{skill.meta}</p>
 
               <div className="skill-tags">
                 {skill.tags.map((tag) => (
@@ -323,7 +342,8 @@ const Skills = () => {
 
       <div className="skills-footer">
         <p className="footer-text">
-          Continuously improving through real-world builds, performance tuning, and modern tooling.
+          Focused on building production-ready applications with clean architecture, strong
+          performance, and modern user experiences.
         </p>
       </div>
     </section>

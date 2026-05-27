@@ -1,7 +1,7 @@
 import Hero from "./Pages/About_me/Hero/Hero";
 import AboutSection from "./Pages/About_me/AboutSection/AboutSection";
-import Projects from "./Pages/Projects/Projects";
-import Skills from "./Pages/Skills/Skills";
+import Projects from "./Pages/About_me/Projects/Projects";
+import Skills from "./Pages/About_me/Skills/Skills";
 import ContactSection from "./components/ContactSection/ContactSection";
 import Workspace from "./components/Workspace/Workspace";
 
